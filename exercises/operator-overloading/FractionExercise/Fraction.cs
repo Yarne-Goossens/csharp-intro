@@ -46,9 +46,8 @@ namespace FractionExercise
             return new Fraction(this.Denominator, this.Numerator);
         }
 
-        public Fraction Add(Fraction b)
+        public static Fraction operator +(Fraction a, Fraction b)
         {
-            var a = this;
 
             var numer = a.Numerator * b.Denominator + a.Denominator * b.Numerator;
             var denom = a.Denominator * b.Denominator;
@@ -56,34 +55,38 @@ namespace FractionExercise
             return new Fraction(numer, denom);
         }
 
-        public Fraction Negate()
+        public static Fraction operator -(Fraction a)
         {
-            var a = this;
-
             return new Fraction(-a.Numerator, a.Denominator);
         }
 
-        public Fraction Subtract(Fraction b)
+        public static Fraction operator -(Fraction a,Fraction b)
         {
-            var a = this;
 
-            return a.Add(b.Negate());
+            return a + -b;
         }
 
-        public Fraction Multiply(Fraction b)
+        public static Fraction operator *(Fraction a, Fraction b)
         {
-            var a = this;
             var numer = a.Numerator * b.Numerator;
             var denom = a.Denominator * b.Denominator;
 
             return new Fraction(numer, denom);
         }
 
-        public Fraction Divide(Fraction b)
+        public static Fraction operator /(Fraction a, Fraction b)
         {
-            var a = this;
+            return a * b.Invert();
+        }
 
-            return a.Multiply(b.Invert());
+        public static bool operator ==(Fraction a, Fraction b)
+        {
+            return a.Equals(b);
+        }
+
+        public static bool operator !=(Fraction a, Fraction b)
+        {
+            return !(a == b);
         }
     }
 }
