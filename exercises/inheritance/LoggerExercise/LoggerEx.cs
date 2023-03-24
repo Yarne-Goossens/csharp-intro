@@ -1,8 +1,8 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Solution
+namespace LoggerExercise
 {
     public abstract class Logger
     {
@@ -10,14 +10,13 @@ namespace Solution
 
         public virtual void Close()
         {
-            // NOP
+            //Empty
         }
     }
 
     public class StreamLogger : Logger
     {
         private readonly StreamWriter writer;
-
         public StreamLogger(StreamWriter writer)
         {
             this.writer = writer;
@@ -25,31 +24,29 @@ namespace Solution
 
         public override void Log(string message)
         {
-            this.writer.WriteLine(message);
-            this.writer.Flush();
+            writer.WriteLine(message);
+            writer.Flush();
         }
     }
 
     public class FileLogger : StreamLogger
     {
-        private readonly FileStream fileStream;
+        private readonly FileStream stream;
 
-        public static Logger Create(string path)
+        public FileLogger(FileStream stream) : base(new StreamWriter(stream))
         {
-            var fileStream = File.OpenWrite(path);
-
-            return new FileLogger(fileStream);
+            this.stream = stream;
         }
 
-        private FileLogger(FileStream fileStream)
-            : base(new StreamWriter(fileStream))
+        public static Logger Create(string filename)
         {
-            this.fileStream = fileStream;
+            var file = File.OpenWrite(filename);
+            return new FileLogger(file);
         }
 
         public override void Close()
         {
-            this.fileStream.Close();
+            stream.Close();
         }
     }
 
@@ -57,7 +54,7 @@ namespace Solution
     {
         public override void Log(string message)
         {
-            // NOP
+            //Empty
         }
     }
 
